@@ -40,23 +40,7 @@ int main(int argc, char* argv[])
 
             switch (c)
             {
-                case '(':
-                    result = push(c);
-                    if (result == -1)
-                    {
-                        printf("Stack is empty.\n");
-                        exit(EXIT_FAILURE);
-                    }
-                    break;
-                case '{':
-                    result = push(c);
-                    if (result == -1)
-                    {
-                        printf("Stack is empty.\n");
-                        exit(EXIT_FAILURE);
-                    }
-                    break;
-                case '[':
+                case '[': case '{': case '(':
                     result = push(c);
                     if (result == -1)
                     {
