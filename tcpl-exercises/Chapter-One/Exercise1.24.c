@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
     }
     if (open_delimiter_count != closed_delimiter_count)
     {
-        printf("Missing a closing */ comment delimiter\n");
+        printf("Missing a comment delimiter\n");
         errors++;
     }
     if (errors > 0)
