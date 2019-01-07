@@ -1,6 +1,12 @@
 #include <stdio.h>
 #define MAXLINELENGTH 120
 
+/* Exercise 1-23.
+ *
+ * Write a program to remove all comments from a C program. Don't forget to
+ * handle quoted strings and character constants properly. C comments don't nest.
+ */
+
 int main(int argc, char* argv[])
 {
     FILE *infp = fopen("program-in.txt","r");

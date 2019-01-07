@@ -1,6 +1,11 @@
 #include <stdio.h>
 #define MAX_LENGTH 1000 /* the maximum length of a line */
 
+/* Exercise 1-17.
+ *
+ * Write a program to print all input lines that are longer than 80 characters.
+ */
+
 int getlinelength(char line[], int maxline);
 void copy(char to[], char from[]);
 

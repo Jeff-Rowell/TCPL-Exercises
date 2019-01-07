@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Exercise 1-15.
+ *
+ * Rewrite the temperature conversion program of Section 1.2 to use a function for conversion.
+ */
+
 void convert_temp(char* from);
 
 int main(int argc, char* argv[])

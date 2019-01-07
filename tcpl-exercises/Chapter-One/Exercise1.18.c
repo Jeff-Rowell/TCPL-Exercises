@@ -1,6 +1,12 @@
 #include <stdio.h>
 #define MAX_LENGTH 1000 /* the maximum length of a line */
 
+/* Exercise 1-18.
+ *
+ * Write a program to remove trailing blanks and tabs from each line of input,
+ * and to delete entirely blank lines.
+ */
+
 int getlinelength(char line[], int maxline);
 int remove_blanks_tabs(char line[]);
 

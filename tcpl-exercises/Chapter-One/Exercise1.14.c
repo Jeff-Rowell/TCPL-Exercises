@@ -1,5 +1,11 @@
 #include <stdio.h>
 
+/* Exercise 1-14.
+ *
+ * Write a program to print a histogram of the frequencies of different characters
+ * in its input.
+ */
+
 int main(int argc, char* argv[])
 {
     int count_array[26], c;

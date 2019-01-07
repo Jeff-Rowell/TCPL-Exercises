@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+/* Exercise 1-3.
+ *
+ * Modify the temperature conversion program to print a heading above the table.
+ */
+
 int main(int argc, char* argv[])
 {
     float fahr, celsius;

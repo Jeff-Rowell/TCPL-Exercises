@@ -1,6 +1,12 @@
 #include <stdio.h>
 #define MAX_LENGTH 1000 /* the maximum length of a line */
 
+/* Exercise 1-19.
+ *
+ * Write a function reverse(s) that reverses the character string s. Use it to
+ * write a program that reverses its input a line at a time.
+ */
+
 void reverseLine(char forward[]);
 int getlinelength(char s[], int lim);
 
