@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     FILE *infp = fopen("program-in2.txt","r");
     char line[MAXLINELENGTH];
     char c, temp;
-    int i = 0, k = 0, line_number = 1, errors = 0, result, open_delimiter_count = 0, closed_delimiter_count = 0;
+    int result, i = 0, k = 0, line_number = 1, errors = 0, open_delimiter_count = 0, closed_delimiter_count = 0;
 
     while(fgets(line, MAXLINELENGTH, infp))
     {
@@ -186,6 +186,5 @@ int peek()
     {
         return -1;
     }
-
     return *(stackp - 1);
 }
