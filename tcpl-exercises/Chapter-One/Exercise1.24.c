@@ -186,6 +186,5 @@ int peek()
     {
         return -1;
     }
-
     return *(stackp - 1);
 }
