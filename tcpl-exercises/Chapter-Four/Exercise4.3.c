@@ -20,18 +20,20 @@ void push(double);
 double pop(void);
 int getch(void);
 void ungetch(int);
+int size(void);
 
 char buf[BUFSIZE];  /* buffer for ungetch */
 int bufp = 0;       /* next free position in buf */
 int sp = 0;         /* next free stack position */
 double val[MAXVAL]; /* value stack */
+double* valp = val;
 
 /* reverse Polish calculator */
 int main(int argc, char* argv[])
 {
     int type;
     double op2;
-    char s[MAXOP];
+    char s[MAXOP], c;
 
     while ((type = getop(s)) != EOF)
     {
@@ -47,9 +49,18 @@ int main(int argc, char* argv[])
                 push(pop() * pop());
                 break;
             case '-':
-                op2 = pop();
-                push(pop() - op2);
-                break;
+                if (size() < 2)
+                {
+                    c = getop(s);
+                    push(-atof(s));
+                    break;
+                }
+                else
+                {
+                    op2 = pop();
+                    push(pop() - op2);
+                    break;
+                }
             case '/':
                 op2 = pop();
                 if (op2 != 0.0)
@@ -76,7 +87,10 @@ int main(int argc, char* argv[])
 void push(double f)
 {
     if (sp < MAXVAL)
-        val[sp++] = f;
+    {
+        sp++;
+        *(valp++) = f;
+    }
     else
         printf("error: stack full, can't push %g\n", f);
 }
@@ -85,12 +99,21 @@ void push(double f)
 double pop(void)
 {
     if (sp > 0)
-        return val[--sp];
+    {
+        sp--;
+        return *(--valp);
+    }
     else
     {
         printf("error: stack empty\n");
         return 0.0;
     }
+}
+
+/* size: get the size of the stack */
+int size(void)
+{
+    return valp - val;
 }
 
 /* getop: get next character or numeric operand */
