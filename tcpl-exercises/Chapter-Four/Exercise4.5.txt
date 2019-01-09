@@ -1,0 +1,2 @@
+This exercise was trivial. I added "#include <math.h>" in Exercise 4-3 when implementing
+the modulus operator.
