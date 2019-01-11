@@ -178,6 +178,12 @@ int getop(char s[])
         if (isdigit(temp = getch()))
         {
             s[0] = temp;
+            i = 0;/* collect integer part */
+            while (isdigit(s[++i] = c = getch()))
+                ;
+            if (c == '.') /* collect fraction part */
+                while (isdigit(s[++i] = c = getch()))
+                    ;
             return NEG_NUMBER;
         }
         else
