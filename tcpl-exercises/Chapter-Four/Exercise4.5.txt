@@ -1,2 +1,8 @@
+/* Exercise 4-5
+ *
+ * Add access to library functions like sin, exp, and pow. See <math.h> in
+ * Appendix B, Section 4.
+ */
+
 This exercise was trivial. I added "#include <math.h>" in Exercise 4-3 when implementing
-the modulus operator.
+the modulus operator. See Exercise 4.3-4.5.

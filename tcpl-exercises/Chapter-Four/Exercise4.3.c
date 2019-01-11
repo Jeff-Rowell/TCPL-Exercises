@@ -3,14 +3,14 @@
 #include <ctype.h>
 #include <math.h>   /* for fmod(a, b) */
 
-#define MAXOP 100   /* max size of operand or operator */
-#define MAXVAL 100  /* maximum depth of val stack */
-#define NUMBER '0'  /* signal that a number was found */
+#define MAXOP 100       /* max size of operand or operator */
+#define MAXVAL 100      /* maximum depth of val stack */
+#define NUMBER '0'      /* signal that a number was found */
+#define NEG_NUMBER '1'  /* signal that a negative number was found */
 #define BUFSIZE 100
 
-
-/* Exercise 4-3.
- * 
+/* Exercise 4-4
+ *
  * Given the basic framework, it's straightforward to extend the calculator. Add
  * the modulus (%) operator and provisions for negative numbers.
  */
@@ -21,6 +21,10 @@ double pop(void);
 int getch(void);
 void ungetch(int);
 int size(void);
+double peek(void);
+void duplicate(void);
+void swap(void);
+void clear(void);
 
 char buf[BUFSIZE];  /* buffer for ungetch */
 int bufp = 0;       /* next free position in buf */
@@ -33,7 +37,7 @@ int main(int argc, char* argv[])
 {
     int type;
     double op2;
-    char s[MAXOP], c;
+    char s[MAXOP];
 
     while ((type = getop(s)) != EOF)
     {
@@ -42,6 +46,9 @@ int main(int argc, char* argv[])
             case NUMBER:
                 push(atof(s));
                 break;
+            case NEG_NUMBER:
+                push(-atof(s));
+                break;
             case '+':
                 push(pop() + pop());
                 break;
@@ -49,18 +56,9 @@ int main(int argc, char* argv[])
                 push(pop() * pop());
                 break;
             case '-':
-                if (size() < 2)
-                {
-                    c = getop(s);
-                    push(-atof(s));
-                    break;
-                }
-                else
-                {
-                    op2 = pop();
-                    push(pop() - op2);
-                    break;
-                }
+                op2 = pop();
+                push(pop() - op2);
+                break;
             case '/':
                 op2 = pop();
                 if (op2 != 0.0)
@@ -119,12 +117,25 @@ int size(void)
 /* getop: get next character or numeric operand */
 int getop(char s[])
 {
-    int i, c;
+    int i, c, temp;
     while ((s[0] = c = getch()) == ' ' || c == '\t')
         ;
     s[1] = '\0';
     if (!isdigit(c) && c != '.')
-        return c; /* not a number */
+    {
+        if (c == '\n')
+            return c;
+        if (isdigit(temp = getch()))
+        {
+            s[0] = temp;
+            return NEG_NUMBER;
+        }
+        else
+        {
+            ungetch(temp);
+            return c; /* not a number */
+        }
+    }
     i = 0;
     if (isdigit(c)) /* collect integer part */
         while (isdigit(s[++i] = c = getch()))
