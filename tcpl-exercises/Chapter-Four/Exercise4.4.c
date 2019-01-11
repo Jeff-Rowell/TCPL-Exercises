@@ -184,6 +184,7 @@ int getop(char s[])
             if (c == '.') /* collect fraction part */
                 while (isdigit(s[++i] = c = getch()))
                     ;
+            s[i] = '\0';
             return NEG_NUMBER;
         }
         else
