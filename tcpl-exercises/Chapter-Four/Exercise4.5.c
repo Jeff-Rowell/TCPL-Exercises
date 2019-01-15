@@ -2,21 +2,20 @@
 #include <stdlib.h> /* for atof() */
 #include <ctype.h>
 #include <math.h>   /* for fmod(a, b) */
-#include <string.h> /* for tolower(a) */
+#include <string.h> /* for strlwr and strcmp */
 
 #define MAXOP 100       /* max size of operand or operator */
 #define MAXVAL 100      /* maximum depth of val stack */
 #define NUMBER '0'      /* signal that a number was found */
 #define NEG_NUMBER '1'  /* signal that a negative number was found */
-#define VARIABLE '2'    /* signal that a variable name was found */
+#define MATH_WORD '2'   /* signal that a math operator is found */
 
 #define BUFSIZE 100
-#define MAX_VARS 26
 
-/* Exercise 4-6
+/* Exercise 4-4
  *
- * Add commands for handling variables. (It's easy to provide twenty-six variables
- * with single-letter names.) Add a variable for the most recently printed value.
+ * Add access to library functions like sin, exp, and pow. See <math.h> in
+ * Appendix B, Section 4.
  */
 
 int getop(char []);
@@ -29,23 +28,19 @@ double peek(void);
 void duplicate(void);
 void swap(void);
 void clear(void);
-int is_variable(int);
-double resolve_variable(char);
 
-char buf[BUFSIZE];              /* buffer for ungetch */
-int bufp = 0;                   /* next free position in buf */
-int sp = 0;                     /* next free stack position */
-double val[MAXVAL];             /* value stack */
+char buf[BUFSIZE];  /* buffer for ungetch */
+int bufp = 0;       /* next free position in buf */
+int sp = 0;         /* next free stack position */
+double val[MAXVAL]; /* value stack */
 double* valp = val;
-int var_count = 0;              /* next free variable name */
-double variable_vals[MAX_VARS]; /* values of variable names */
-const char* vars = "abcdefghijklmnopqrstuvwxyz";
+char math_word_buf[5];   /* longest math operator can be sqrt, plus space for null terminator. */
 
 /* reverse Polish calculator */
 int main(int argc, char* argv[])
 {
     int type;
-    double op2, temp;
+    double power, op2;
     char s[MAXOP], c;
 
     while ((type = getop(s)) != EOF)
@@ -56,13 +51,7 @@ int main(int argc, char* argv[])
                 push(atof(s));
                 break;
             case NEG_NUMBER:
-                if (is_variable(s[0]))
-                    push(-resolve_variable(s[0]));
-                else
-                    push(-atof(s));
-                break;
-            case VARIABLE:
-                push(resolve_variable(s[0]));
+                push(-atof(s));
                 break;
             case '+':
                 push(pop() + pop());
@@ -86,9 +75,30 @@ int main(int argc, char* argv[])
                 push(fmod(pop(), op2));
                 break;
             case '\n':
-                temp = pop();
-                variable_vals[var_count++] = temp;
-                printf("\t%.8g\tstored in variable %c\n", temp, vars[var_count - 1]);
+                printf("\t%.8g\n", pop());
+                break;
+            case MATH_WORD:
+                if (strcmp(math_word_buf, "pow") == 0)
+                {
+                    power = pop();
+                    push(pow(pop(), power));
+                }
+                else if (strcmp(math_word_buf, "sin") == 0)
+                {
+                    push(sin(pop()));
+                }
+                else if (strcmp(math_word_buf, "cos") == 0)
+                {
+                    push(cos(pop()));
+                }
+                else if (strcmp(math_word_buf, "exp") == 0)
+                {
+                    push(exp(pop()));
+                }
+                else if (strcmp(math_word_buf, "sqrt") == 0)
+                {
+                    push(sqrt(pop()));
+                }
                 break;
             default:
                 printf("error: unknown command %s\n", s);
@@ -165,15 +175,11 @@ int getop(char s[])
     while ((s[0] = c = getch()) == ' ' || c == '\t')
         ;
     s[1] = '\0';
-    if (is_variable(c))
-    {
-        return VARIABLE;
-    }
     if (!isdigit(c) && c != '.')
     {
         if (c == '\n')
             return c;
-        if (isdigit(temp = getch()) || is_variable(temp))
+        if (isdigit(temp = getch()))
         {
             s[0] = temp;
             i = 0;/* collect integer part */
@@ -187,8 +193,36 @@ int getop(char s[])
         }
         else
         {
-            ungetch(temp);
-            return c; /* not a number */
+            if (c == '+' || c == '-' || c == '*' || c == '/')
+            {
+                ungetch(temp);
+                return c; /* not a number */
+            }
+            math_word_buf[0] = c;
+            math_word_buf[1] = temp;
+            int l = 2;
+            while (( c = getch()) != ' ' && c != '\t')
+            {
+                if (c == '\n')
+                {
+                    ungetch(c);
+                    break;
+                }
+                math_word_buf[l++] = c;
+            }
+            math_word_buf[l] = '\0';
+            l = 0;
+            while (math_word_buf[l])
+            {
+                math_word_buf[l] = tolower(math_word_buf[l]);
+                l++;
+            }
+            if (strcmp(math_word_buf, "sin") == 0 || strcmp(math_word_buf, "cos") == 0 ||
+                strcmp(math_word_buf, "exp") == 0 || strcmp(math_word_buf, "pow") == 0 ||
+                strcmp(math_word_buf, "sqrt") == 0)
+            {
+                return MATH_WORD;
+            }
         }
     }
     i = 0;
@@ -217,24 +251,4 @@ void ungetch(int c)
         printf("ungetch: too many characters\n");
     else
         buf[bufp++] = c;
-}
-
-/* is_variable: checks if a given item is a variable name. */
-int is_variable(int item)
-{
-    return ((item >= 'a' && item <= 'z') || (item >= 'A' && item <= 'Z')) ? 1 : 0;
-}
-
-/* resolve_variable: given a variable name, returns its corresponding value. */
-double resolve_variable(char c)
-{
-    double result = 0.0;
-    for (int i = 0; i < MAX_VARS; i++)
-    {
-        if (vars[i] == tolower(c))
-        {
-            result = variable_vals[i];
-        }
-    }
-    return result;
 }
