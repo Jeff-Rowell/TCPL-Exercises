@@ -1,17 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h> /* for atof() */
-#include <ctype.h>
-#include <math.h>   /* for fmod(a, b) */
-#include <string.h> /* for tolower(a) */
 
 #define MAXOP 100       /* max size of operand or operator */
-#define MAXVAL 100      /* maximum depth of val stack */
-#define NUMBER '0'      /* signal that a number was found */
-#define NEG_NUMBER '1'  /* signal that a negative number was found */
-#define VARIABLE '2'    /* signal that a variable name was found */
-
 #define BUFSIZE 100
-#define MAX_VARS 26
 
 /* Exercise 4-9
  *

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h> /* for tolower(a) */
 
 #define MAXOP 100       /* max size of operand or operator */
 #define BUFSIZE 1       /* change to 1 to limit getch and ungetch to only pushback at most one character */
