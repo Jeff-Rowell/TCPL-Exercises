@@ -31,7 +31,7 @@ double peek(void);
 void duplicate(void);
 void swap(void);
 void clear(void);
-int is_variable(char c);
+int is_variable(char);
 double resolve_variable(char);
 
 char buf[BUFSIZE];  /* buffer for ungetch */
