@@ -2,7 +2,7 @@
 #include <stdlib.h> /* for atof() */
 #include <ctype.h>
 #include <math.h>   /* for fmod(a, b) */
-#include <string.h> /* for strlwr and strcmp */
+#include <string.h> /* for strcmp */
 
 #define MAXOP 100       /* max size of operand or operator */
 #define MAXVAL 100      /* maximum depth of val stack */
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 {
     int type;
     double power, op2;
-    char s[MAXOP], c;
+    char s[MAXOP];
 
     while ((type = getop(s)) != EOF)
     {

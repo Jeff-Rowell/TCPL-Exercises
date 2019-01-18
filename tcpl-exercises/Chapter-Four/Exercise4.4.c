@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 {
     int type;
     double op2;
-    char s[MAXOP], c;
+    char s[MAXOP];
 
     push(2.0);
     push(3.0);
