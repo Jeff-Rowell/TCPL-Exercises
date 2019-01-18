@@ -31,7 +31,7 @@ void swap(void);
 void clear(void);
 int is_variable(char c);
 double resolve_variable(char);
-void get_line(char[]);
+void get_line();
 
 char buf[BUFSIZE];  /* buffer for ungetch */
 int bufp = 0;       /* next free position in buf */
@@ -45,7 +45,7 @@ const char* variables = "abcdefghijklmnopqrstuvwxyz";
 double variable_vals[NUM_VARIABLES];
 
 int linep = 0;          /* current character in the line */
-char line[MAX_LINE];
+char line[MAX_LINE] = "";
 
 /* reverse Polish calculator */
 int main(int argc, char* argv[])
@@ -119,6 +119,7 @@ int main(int argc, char* argv[])
                 {
                     push(sqrt(pop()));
                 }
+                math_word_buf[0] = '\0';
                 break;
             default:
                 printf("error: unknown command %s\n", s);
@@ -192,8 +193,10 @@ int size(void)
 int getop(char s[])
 {
     int i, c, temp;
+    if (linep < 0)
+        printf("linep is negative.\n");
     if (linep == 0)
-        get_line(line);
+        get_line();
 
     while ((s[0] = c = line[linep++]) == ' ' || c == '\t')
         ;
@@ -271,7 +274,7 @@ int getop(char s[])
     return NUMBER;
 }
 
-void get_line(char line[])
+void get_line()
 {
     int c, i;
 
