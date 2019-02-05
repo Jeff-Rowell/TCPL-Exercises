@@ -25,39 +25,39 @@ void tail(int, char*);
 
 int main(int argc, char *argv[])
 {
-	char *arg1, *arg2;
-	int n;
+    char *arg1, *arg2;
+    int n;
 
-	if (argc < 2)
-	{
-		printf("Error. Need filename, or filename and number of last lines to print.\n");
-		exit(1);
-	}
-	else if (argc > 2)
-	{
-		arg1 = *(++argv);
-		arg2 = *(++argv);
-		if (arg1[0] == '-')
-		{
-			n = atoi(++arg1);
-			tail(n, arg2);
-		}
-		else
-		{
-			n = atoi(++arg2);
+    if (argc < 2)
+    {
+        printf("Error. Need filename, or filename and number of last lines to print.\n");
+        exit(1);
+    }
+    else if (argc > 2)
+    {
+        arg1 = *(++argv);
+        arg2 = *(++argv);
+        if (arg1[0] == '-')
+        {
+            n = atoi(++arg1);
+            tail(n, arg2);
+        }
+        else
+        {
+            n = atoi(++arg2);
             tail(n, arg1);
-		}
-	}
-	else
-	{
-		arg1 = *(++argv);
-		if (arg1[0] == '-')
-		{
-			printf("Error. Need filename, or filename and number of last lines to print.\n");
-			exit(1);
-		}
+        }
+    }
+    else
+    {
+        arg1 = *(++argv);
+        if (arg1[0] == '-')
+        {
+            printf("Error. Need filename, or filename and number of last lines to print.\n");
+            exit(1);
+        }
         tail(n, arg1);
-	}
+    }
     return 0;
 }
 
