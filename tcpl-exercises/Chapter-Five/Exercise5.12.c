@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
 
 void entab(int start, int tabstop)
 {
-	int c, blanks = 0;
+    int c, blanks = 0;
 
-	while ((blanks++) < start)
+    while ((blanks++) < start)
     {
         putchar(getchar());
     }
@@ -90,33 +90,33 @@ void entab(int start, int tabstop)
 
 void detab(int start, int tabstop)
 {
-	int c, i, column = 0;
+    int c, i, column = 0;
 
     while ((column++) < start)
     {
         putchar(getchar());
     }
-	while ((c = getchar()) != '\n')
+    while ((c = getchar()) != '\n')
+    {
+	if (c == '\t')
 	{
-		if (c == '\t')
+		for (i = 0; i < tabstop - column % tabstop; ++i)
 		{
-			for (i = 0; i < tabstop - column % tabstop; ++i)
-			{
-				putchar(' ');
-			}
-			column += tabstop - column % tabstop;
+			putchar(' ');
 		}
-		else if (c == '\n')
-		{
-			putchar(c);
-			column = 0;
-		}
-		else
-		{
-			putchar(c);
-			column++;
-		}
+		column += tabstop - column % tabstop;
 	}
+	else if (c == '\n')
+	{
+		putchar(c);
+		column = 0;
+	}
+	else
+	{
+		putchar(c);
+		column++;
+	}
+    }
 }
 
 void printBlanks(int num_blanks)
