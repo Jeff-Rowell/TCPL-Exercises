@@ -70,7 +70,6 @@ void tail(int n, char *filename)
     while (fgets(ins, MAX_LINE_LEN, fp))
     {
         strcpy(temp_buf[num_lines++], ins);
-//        temp_buf[num_lines++] = ins;
     }
     fclose(fp);
     if (n > num_lines)
