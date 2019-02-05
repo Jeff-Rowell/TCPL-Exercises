@@ -66,7 +66,7 @@ void tail(int n, char *filename)
     FILE *fp;
     if (!(fp = fopen(filename, "r")))
     {
-        printf("Error. File not found.\n");
+        printf("Error. File \"%s\" not found.\n", filename);
         exit(1);
     }
     char temp_buf[MAX_LINES][MAX_LINE_LEN], ins[MAX_LINE_LEN];
